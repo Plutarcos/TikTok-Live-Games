@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Jogo de Inimigo</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #game-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      background-color: #222;
+    }
+    #inimigo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150px;
+      height: 150px;
+      background-image: url('https://projectpokemon.org/images/shiny-sprite/charizard-megay.gif'); /* Imagem inicial */
+      background-size: cover;
+    }
+    #mensagem-ajuda {
+      position: absolute;
+      top: -90px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 30px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    #nome-inimigo {
+      position: absolute;
+      top: -30px; /* Ajusta a posição do nome do inimigo */
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 16px;
+      text-align: center;
+    }
+    .vida-inimigo {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background-color: #0f0;
+    }
+    #vida-texto {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+    }
+    #vida-total { /* Novo elemento para exibir a vida total em vermelho */
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: red;
+    }
+    #info-danos {
+      position: absolute;
+      top: calc(100% + 20px);
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 14px;
+      white-space: nowrap;
+      margin-top: 5px;
+    }
+    #icon-coracao {
+      position: absolute;
+      top: calc(100% + 40px);
+      left: -30%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 20px;
+    }
+    #icon-rosa {
+      position: absolute;
+      top: calc(100% + 40px);
+      left: calc(50% - 40px); /* Alinha o ícone rosa à esquerda da palavra */
+      width: 20px;
+      height: 20px;
+    }
+    #icon-donut {
+      position: absolute;
+      top: calc(100% + 40px);
+      left: calc(50% + 60px); /* Alinha o ícone Donut à direita da palavra */
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="inimigo">
+      <div id="mensagem-ajuda">Ajude a derrotar o monstro</div>
+      <div class="vida-inimigo"></div>
+      <div id="nome-inimigo"></div>
+      <div id="vida-texto"></div>
+      <div id="vida-total"></div> <!-- Novo elemento para a vida total -->
+      <div id="info-danos">coração = 1 dano, rosa = 10 dano, Donut = 50 dano</div>
+      <img id="icon-coracao" src="https://png.pngtree.com/png-vector/20220411/ourmid/pngtree-glossy-heart-best-vector-ai-and-png-png-image_4538478.png" alt="Ícone Coração">
+      <img id="icon-rosa" src="https://storage.streamdps.com/iblock/f59/f5902abbd13178017285a308606fd0dd/cf6a40558018965a8171cf5a575dd9de.png" alt="Ícone Rosa">
+      <img id="icon-donut" src="https://tiktokcreatoruniversity.com/wp-content/themes/tiktok-learning/dist/images/highlight-slider/highlight-slider-donut.png" alt="Ícone Donut">
+    </div>
+  </div>
+  <script>
+    const gameContainer = document.getElementById('game-container');
+    let inimigo = document.getElementById('inimigo');
+    let vidaInimigo = document.querySelector('.vida-inimigo');
+    let vida = 100;
+
+    const mensagemAjuda = document.getElementById('mensagem-ajuda');
+    const nomeInimigo = document.getElementById('nome-inimigo');
+    const vidaTexto = document.getElementById('vida-texto');
+    const vidaTotal = document.getElementById('vida-total'); // Novo elemento para a vida total
+
+    const nomesDinossauros = [
+      'Tyrannosaurus', 'Stegosaurus', 'Velociraptor', 'Triceratops', 'Brachiosaurus',
+      'Pterodactyl', 'Allosaurus', 'Ankylosaurus', 'Archaeopteryx', 'Dilophosaurus',
+      'Spinosaurus', 'Pachycephalosaurus', 'Iguanodon', 'Parasaurolophus', 'Carnotaurus',
+      'Therizinosaurus', 'Compsognathus', 'Microraptor', 'Deinonychus', 'Amargasaurus'
+    ];
+
+    const imagens = [
+      'https://projectpokemon.org/images/shiny-sprite/charizard-megay.gif',
+      'https://play.pokemonshowdown.com/sprites/xyani-shiny/aerodactyl-mega.gif',
+      'https://www.pkparaiso.com/imagenes/xy/sprites/animados/aerodactyl-2.gif',
+      'https://static.wikia.nocookie.net/robloxpokemonbrickbronze/images/0/06/Garchomp-5.gif/revision/latest?cb=20170417125244',
+      'https://static.wikia.nocookie.net/robloxpokemonbrickbronze/images/4/4b/Lucario-4.gif/revision/latest/scale-to-width-down/192?cb=20170417125258',
+      'https://static.wikia.nocookie.net/digimon/images/8/82/AeroVeedramon_vg.gif/revision/latest/scale-to-width-down/150?cb=20110129005759',
+      'https://static.wikia.nocookie.net/digimon/images/e/ed/Airdramon_vg.gif/revision/latest/scale-to-width-down/150?cb=20130418115958',
+      'https://static.wikia.nocookie.net/digimon/images/1/1a/Agumon_%282006_anime%29_vg.gif/revision/latest?cb=20100621213252',
+      'https://static.wikia.nocookie.net/digimon/images/c/ce/Alphamon_vg.gif/revision/latest?cb=20110129012629',
+      'https://static.wikia.nocookie.net/digimon/images/8/83/AncientBeetlemon_vg.gif/revision/latest?cb=20110508223130',
+      'https://static.wikia.nocookie.net/digimon/images/2/24/AncientVolcanomon_vg.gif/revision/latest?cb=20110508223704',
+      'https://projectpokemon.org/images/normal-sprite/charizard-megax.gif',
+      'https://projectpokemon.org/images/shiny-sprite/blastoise-mega.gif',
+      'https://projectpokemon.org/images/shiny-sprite/beedrill-mega.gif',
+      'https://projectpokemon.org/images/shiny-sprite/sandslash-alola.gif',
+      'https://projectpokemon.org/images/normal-sprite/ninetales.gif'
+    ];
+
+    // Função para escolher uma imagem aleatória da lista
+    function escolherImagemAleatoria() {
+      const indiceAleatorio = Math.floor(Math.random() * imagens.length);
+      return imagens[indiceAleatorio];
+    }
+
+    // Função para escolher um nome aleatório de dinossauro
+    function escolherNomeAleatorio() {
+      const indice1 = Math.floor(Math.random() * nomesDinossauros.length);
+      let indice2 = Math.floor(Math.random() * nomesDinossauros.length);
+      while (indice2 === indice1) {
+        // Garante que os dois índices não são iguais
+        indice2 = Math.floor(Math.random() * nomesDinossauros.length);
+      }
+      return `${nomesDinossauros[indice1]}-${nomesDinossauros[indice2]}`;
+    }
+
+    // Inicialmente, definimos a imagem, o nome do inimigo e a mensagem de ajuda
+    inimigo.style.backgroundImage = `url('${escolherImagemAleatoria()}')`;
+    nomeInimigo.textContent = escolherNomeAleatorio();
+    mensagemAjuda.textContent = 'Ajude a derrotar o monstro';
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === '1') {
+        perderVida(1); // Reduz 1 ponto de vida
+      } else if (event.key === '2') {
+        perderVida(10); // Reduz 10 pontos de vida
+      } else if (event.key === '3') {
+        perderVida(50); // Reduz 50 pontos de vida
+      }
+    });
+
+    function atualizarTextoVida() {
+      vidaTexto.textContent = vida + '/100';
+    }
+
+    function perderVida(pontos) {
+      vida -= pontos;
+      if (vida <= 0) {
+        criarNovoInimigo();
+      }
+      vidaInimigo.style.width = `${vida}%`;
+      atualizarTextoVida();
+    }
+
+    function criarNovoInimigo() {
+      vida = 100; // Vida aleatória entre 50 e 100
+      inimigo.style.backgroundImage = `url('${escolherImagemAleatoria()}')`; // Escolhe uma nova imagem aleatória
+      nomeInimigo.textContent = escolherNomeAleatorio(); // Escolhe um novo nome aleatório
+      mensagemAjuda.textContent = 'Ajude a derrotar o monstro'; // Define novamente a mensagem de ajuda
+      vidaInimigo.style.width = `${vida}%`; // Atualiza a barra de vida
+      atualizarTextoVida();
+    }
+
+    atualizarTextoVida();
+  </script>
+</body>
+</html>
