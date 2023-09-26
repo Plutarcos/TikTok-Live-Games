@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
-  <title>Jogo de Inimigo</title>
+  <title>Monster Fight</title>
   <style>
+    /* O estilo CSS existente permanece inalterado */
     body {
       margin: 0;
       overflow: hidden;
@@ -103,20 +105,64 @@
       width: 20px;
       height: 20px;
     }
+
+    #sidebar {
+      background-color: #111;
+      width: 200px;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+    }
+
+    #sidebar a {
+      padding: 10px;
+      text-decoration: none;
+      color: #fff;
+      display: block;
+    }
+
+    #sidebar a:hover {
+      background-color: #333;
+    }
+
+    #content {
+      margin-left: 200px;
+      padding: 20px;
+    }
   </style>
 </head>
+
 <body>
-  <div id="game-container">
-    <div id="inimigo">
-      <div id="mensagem-ajuda">Ajude a derrotar o monstro</div>
-      <div class="vida-inimigo"></div>
-      <div id="nome-inimigo"></div>
-      <div id="vida-texto"></div>
-      <div id="vida-total"></div> <!-- Novo elemento para a vida total -->
-      <div id="info-danos">coração = 1 dano, rosa = 10 dano, Donut = 50 dano</div>
-      <img id="icon-coracao" src="https://png.pngtree.com/png-vector/20220411/ourmid/pngtree-glossy-heart-best-vector-ai-and-png-png-image_4538478.png" alt="Ícone Coração">
-      <img id="icon-rosa" src="https://storage.streamdps.com/iblock/f59/f5902abbd13178017285a308606fd0dd/cf6a40558018965a8171cf5a575dd9de.png" alt="Ícone Rosa">
-      <img id="icon-donut" src="https://tiktokcreatoruniversity.com/wp-content/themes/tiktok-learning/dist/images/highlight-slider/highlight-slider-donut.png" alt="Ícone Donut">
+  <div id="sidebar">
+    <a href="#">Voltar</a>
+    <a href="mario.html">Super Mario</a>
+    <a href="zelda.html">The Legend of Zelda</a>
+    <a href="minecraft.html">Minecraft</a>
+    <a href="fortnite.html">Fortnite</a>
+  </div>
+
+  <div id="content">
+    <div id="game-container">
+
+      <div id="inimigo">
+        <div id="mensagem-ajuda">Ajude a derrotar o monstro</div>
+        <div class="vida-inimigo"></div>
+        <div id="nome-inimigo"></div>
+        <div id="vida-texto"></div>
+        <div id="vida-total"></div> <!-- Novo elemento para a vida total -->
+        <div id="info-danos">coração = 1 dano, rosa = 10 dano, Donut = 50 dano</div>
+        <img id="icon-coracao"
+          src="https://png.pngtree.com/png-vector/20220411/ourmid/pngtree-glossy-heart-best-vector-ai-and-png-png-image_4538478.png"
+          alt="Ícone Coração">
+        <img id="icon-rosa"
+          src="https://storage.streamdps.com/iblock/f59/f5902abbd13178017285a308606fd0dd/cf6a40558018965a8171cf5a575dd9de.png"
+          alt="Ícone Rosa">
+        <img id="icon-donut"
+          src="https://tiktokcreatoruniversity.com/wp-content/themes/tiktok-learning/dist/images/highlight-slider/highlight-slider-donut.png"
+          alt="Ícone Donut">
+      </div>
     </div>
   </div>
   <script>
@@ -178,7 +224,7 @@
     nomeInimigo.textContent = escolherNomeAleatorio();
     mensagemAjuda.textContent = 'Ajude a derrotar o monstro';
 
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
       if (event.key === '1') {
         perderVida(1); // Reduz 1 ponto de vida
       } else if (event.key === '2') {
@@ -211,6 +257,8 @@
     }
 
     atualizarTextoVida();
+
   </script>
 </body>
+
 </html>
