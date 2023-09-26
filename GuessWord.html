@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Jogo de Adivinhação de Palavras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+            margin: 150px;
+        }
+
+        #sidebar {
+            background-color: #111;
+            width: 200px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        #sidebar a {
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            display: block;
+        }
+
+        #sidebar a:hover {
+            background-color: #333;
+        }
+
+        #content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+
+        #game-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin-left: 220px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        input {
+            padding: 5px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #pontuacao {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="sidebar">
+        <a href="./Main.html">Voltar</a>
+        <a href="./MonsterFight.html">Monster Fight</a>
+    </div>
+
+    <div id="content">
+        <div id="game-container">
+            <h1>Jogo de Adivinhação de Palavras</h1>
+            <p>Dica: <span id="dica"></span></p>
+            <input type="text" id="palavra-input" placeholder="Digite a palavra"
+                onkeydown="if (event.keyCode === 13) verificarPalavra()">
+            <button onclick="verificarPalavra()">Verificar</button>
+            <p id="mensagem"></p>
+            <p id="pontuacao">Pontuação: <span id="pontuacao-atual">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        const palavrasEDicas = [
+            { palavra: "floresta", dica: "Um lugar repleto de árvores e vida selvagem." },
+            { palavra: "futebol", dica: "Um esporte jogado com uma bola e os pés." },
+            { palavra: "praia", dica: "Um lugar à beira-mar onde as pessoas relaxam e nadam." },
+            { palavra: "computador", dica: "Uma máquina que você usa para navegar na internet e trabalhar." },
+            { palavra: "chocolate", dica: "Um doce delicioso feito de cacau e açúcar." },
+            { palavra: "montanha", dica: "Uma elevação natural da Terra, muitas vezes coberta de neve." },
+            { palavra: "livro", dica: "Uma coleção de páginas com histórias ou informações." },
+            { palavra: "sol", dica: "A estrela que brilha no centro do nosso sistema solar." },
+            { palavra: "amizade", dica: "Um relacionamento especial entre pessoas." },
+            { palavra: "guitarra", dica: "Um instrumento musical com cordas." },
+            { palavra: "bicicleta", dica: "Um veículo de duas rodas movido pelo esforço humano." },
+            { palavra: "televisão", dica: "Um dispositivo para assistir programas e filmes." },
+            { palavra: "viagem", dica: "Uma jornada para um lugar distante." },
+            { palavra: "jardim", dica: "Um espaço onde as pessoas cultivam plantas e flores." },
+            { palavra: "escola", dica: "Um local onde as pessoas aprendem e estudam." },
+            { palavra: "lua", dica: "O satélite natural da Terra que brilha à noite." },
+            { palavra: "bola", dica: "Um objeto esférico usado em muitos esportes." },
+            { palavra: "frio", dica: "Uma sensação de baixa temperatura." },
+            { palavra: "verão", dica: "Uma das quatro estações do ano, geralmente quente." },
+            { palavra: "música", dica: "Sons organizados em harmonia." },
+            { palavra: "cachorro", dica: "Um animal de estimação leal e amigável." },
+            { palavra: "gato", dica: "Um animal de estimação independente e peludo." },
+            { palavra: "piano", dica: "Um instrumento musical com teclas." },
+            { palavra: "filme", dica: "Uma obra cinematográfica." },
+            { palavra: "pintura", dica: "Uma forma de arte visual." },
+            { palavra: "coração", dica: "Um órgão vital que bombeia sangue." },
+            { palavra: "dinheiro", dica: "Meio de troca e pagamento." },
+            { palavra: "pizza", dica: "Uma comida deliciosa com massa e coberturas." },
+            { palavra: "oceano", dica: "Um vasto corpo de água salgada." },
+            { palavra: "fruta", dica: "Alimento saudável e doce." },
+            { palavra: "aventura", dica: "Uma jornada emocionante." },
+            { palavra: "esporte", dica: "Atividade física competitiva." },
+            { palavra: "violinho", dica: "Um instrumento de corda." },
+            { palavra: "dança", dica: "Movimentos rítmicos do corpo." },
+            { palavra: "fotografia", dica: "Captura de imagens com uma câmera." },
+            { palavra: "arco-íris", dica: "Um fenômeno óptico colorido no céu." },
+            { palavra: "inverno", dica: "Uma das quatro estações do ano, geralmente fria." },
+            { palavra: "céu", dica: "A abóbada celeste acima da Terra." },
+            { palavra: "lago", dica: "Uma grande poça de água doce." },
+            { palavra: "telefone", dica: "Um dispositivo de comunicação." },
+            { palavra: "computador", dica: "Uma máquina usada para processar informações." },
+            { palavra: "espelho", dica: "Um objeto que reflete a imagem." },
+            { palavra: "chapéu", dica: "Acessório de vestuário para a cabeça." },
+            { palavra: "hambúrguer", dica: "Um sanduíche de carne moída." },
+            { palavra: "trabalho", dica: "Atividade para ganhar a vida." },
+            { palavra: "férias", dica: "Período de descanso e lazer." },
+            { palavra: "casa", dica: "Um lugar onde as pessoas moram." },
+            { palavra: "relógio", dica: "Um dispositivo para medir o tempo." },
+            { palavra: "chave", dica: "Objeto usado para abrir fechaduras." },
+            { palavra: "piscina", dica: "Local para nadar e se refrescar." },
+            { palavra: "viagem", dica: "Jornada para um destino distante." },
+        ];
+
+
+        const mensagemElement = document.getElementById("mensagem");
+        const dicaElement = document.getElementById("dica");
+        const inputElement = document.getElementById("palavra-input");
+        const pontuacaoElement = document.getElementById("pontuacao-atual");
+
+        let palavraAtualIndex = -1;
+        let pontuacao = 0;
+
+        function selecionarProximaPalavra() {
+            palavraAtualIndex = (palavraAtualIndex + 1) % palavrasEDicas.length;
+            const palavraAleatoria = palavrasEDicas[palavraAtualIndex];
+            dicaElement.textContent = palavraAleatoria.dica;
+            mensagemElement.textContent = "";
+            inputElement.value = "";
+            pontuacaoElement.textContent = pontuacao;
+        }
+
+        function verificarPalavra() {
+            const palavraDigitada = inputElement.value.toLowerCase();
+            const palavraCorreta = palavrasEDicas[palavraAtualIndex].palavra;
+            if (palavraDigitada === palavraCorreta) {
+                mensagemElement.textContent = "Parabéns! Você acertou!";
+                mensagemElement.style.color = "green";
+                pontuacao++;
+                selecionarProximaPalavra();
+            } else {
+                mensagemElement.textContent = "Tente novamente. Palavra incorreta.";
+                mensagemElement.style.color = "red";
+            }
+        }
+
+        selecionarProximaPalavra();
+    </script>
+</body>
+
+</html>

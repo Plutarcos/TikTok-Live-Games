@@ -16,12 +16,14 @@
       align-items: center;
       height: 100vh;
     }
+
     #game-container {
       position: relative;
       width: 400px;
       height: 400px;
       background-color: #222;
     }
+
     #inimigo {
       position: absolute;
       top: 50%;
@@ -29,9 +31,11 @@
       transform: translate(-50%, -50%);
       width: 150px;
       height: 150px;
-      background-image: url('https://projectpokemon.org/images/shiny-sprite/charizard-megay.gif'); /* Imagem inicial */
+      background-image: url('https://projectpokemon.org/images/shiny-sprite/charizard-megay.gif');
+      /* Imagem inicial */
       background-size: cover;
     }
+
     #mensagem-ajuda {
       position: absolute;
       top: -90px;
@@ -42,15 +46,18 @@
       text-align: center;
       white-space: nowrap;
     }
+
     #nome-inimigo {
       position: absolute;
-      top: -30px; /* Ajusta a posição do nome do inimigo */
+      top: -30px;
+      /* Ajusta a posição do nome do inimigo */
       left: 50%;
       transform: translateX(-50%);
       color: #fff;
       font-size: 16px;
       text-align: center;
     }
+
     .vida-inimigo {
       position: absolute;
       bottom: 0;
@@ -59,6 +66,7 @@
       height: 20px;
       background-color: #0f0;
     }
+
     #vida-texto {
       position: absolute;
       top: 100%;
@@ -66,13 +74,16 @@
       transform: translateX(-50%);
       color: #fff;
     }
-    #vida-total { /* Novo elemento para exibir a vida total em vermelho */
+
+    #vida-total {
+      /* Novo elemento para exibir a vida total em vermelho */
       position: absolute;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       color: red;
     }
+
     #info-danos {
       position: absolute;
       top: calc(100% + 20px);
@@ -83,6 +94,7 @@
       white-space: nowrap;
       margin-top: 5px;
     }
+
     #icon-coracao {
       position: absolute;
       top: calc(100% + 40px);
@@ -91,17 +103,21 @@
       width: 20px;
       height: 20px;
     }
+
     #icon-rosa {
       position: absolute;
       top: calc(100% + 40px);
-      left: calc(50% - 40px); /* Alinha o ícone rosa à esquerda da palavra */
+      left: calc(50% - 40px);
+      /* Alinha o ícone rosa à esquerda da palavra */
       width: 20px;
       height: 20px;
     }
+
     #icon-donut {
       position: absolute;
       top: calc(100% + 40px);
-      left: calc(50% + 60px); /* Alinha o ícone Donut à direita da palavra */
+      left: calc(50% + 60px);
+      /* Alinha o ícone Donut à direita da palavra */
       width: 20px;
       height: 20px;
     }
@@ -136,11 +152,8 @@
 
 <body>
   <div id="sidebar">
-    <a href="#">Voltar</a>
-    <a href="mario.html">Super Mario</a>
-    <a href="zelda.html">The Legend of Zelda</a>
-    <a href="minecraft.html">Minecraft</a>
-    <a href="fortnite.html">Fortnite</a>
+    <a href="./Main.html">Voltar</a>
+    <a href="./GuessWord.html">Guess Word</a>
   </div>
 
   <div id="content">
